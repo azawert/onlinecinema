@@ -16,7 +16,8 @@ export class AuthService {
   async register(dto:AuthDto){
     const existedUser = await this.UserModel.findOne({email: dto.email})
     if(existedUser)
-    throw new BadRequestException('Юзер с такой почтой уже зарегестрирован')
+      throw new BadRequestException('Юзер с такой почтой уже зарегестрирован')
+
     const salt = await genSalt(10)
     const newUser = await this.UserModel.create({
       email:dto.email,
