@@ -59,9 +59,7 @@ export class GenreService {
             new: true
         }).exec()
     }
-    async getCount(){
-        return this.GenreModel.find({}).count().exec()
-    }
+
     async deleteGenre(_id:string){
         const deletedGenre = await this.GenreModel.findByIdAndDelete({_id}).exec()
         if(!deletedGenre){
@@ -70,15 +68,18 @@ export class GenreService {
         return {message:'Удаление произошло успешно!'}
     }
 
-    async createGenre(){
-        const defValue:CreateGenreDto = {
-            name:'',
-            slug:'',
-            icon:'',
-            description:'',
+    async createGenre(dto:CreateGenreDto){
+        const defValue = {
+            "name":dto.name,
+            "slug":dto.slug,
+            "icon":dto.icon,
+            "description":dto.description,
+        }
+        if(!defValue.name || !defValue.slug || !defValue.icon || !defValue.description) {
+            throw new BadRequestException('Необходимо заполнить все поля!')
         }
         const genre = await this.GenreModel.create(defValue)
-        return genre._id
+        return genre
     }
 
 }

@@ -3,9 +3,9 @@ import {prop} from "@typegoose/typegoose";
 
 export interface  GenreModel extends Base{}
 export class GenreModel extends TimeStamps {
-    @prop({unique:true})
+    @prop()
     name:string
-    @prop({unique:true})
+    @prop()
     slug:string
     @prop()
     description:string
