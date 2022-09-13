@@ -35,8 +35,8 @@ export class GenreController {
     @Post('create')
     @HttpCode(200)
     @Auth('admin')
-    async createGenre(@Body()dto:CreateGenreDto){
-        return this.genreService.createGenre(dto)
+    async createGenre(){
+        return this.genreService.createGenre()
     }
     @Put(':id')
     @HttpCode(200)

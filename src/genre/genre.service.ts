@@ -55,6 +55,10 @@ export class GenreService {
     }
 
     async updateGenre(_id:string,dto: CreateGenreDto) {
+        const ifGenreExists = await this.GenreModel.findById({_id})
+        if(!ifGenreExists){
+            throw new NotFoundException('Такого жанра не существует.')
+        }
         return this.GenreModel.findByIdAndUpdate(_id,dto,{
             new: true
         }).exec()
@@ -63,23 +67,21 @@ export class GenreService {
     async deleteGenre(_id:string){
         const deletedGenre = await this.GenreModel.findByIdAndDelete({_id}).exec()
         if(!deletedGenre){
-            throw new BadRequestException('Пользователь не найден')
+            throw new BadRequestException('Жанр не найден')
         }
         return {message:'Удаление произошло успешно!'}
     }
 
-    async createGenre(dto:CreateGenreDto){
+    async createGenre(){
         const defValue = {
-            "name":dto.name,
-            "slug":dto.slug,
-            "icon":dto.icon,
-            "description":dto.description,
+            name:"",
+            slug:"",
+            icon:"",
+            description:"",
         }
-        if(!defValue.name || !defValue.slug || !defValue.icon || !defValue.description) {
-            throw new BadRequestException('Необходимо заполнить все поля!')
-        }
+
         const genre = await this.GenreModel.create(defValue)
-        return genre
+        return genre._id
     }
 
 }
