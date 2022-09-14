@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+  Query,
+  UsePipes,
+  ValidationPipe
+} from "@nestjs/common";
 import { MovieService } from "./movie.service";
 import { idValidationPipe } from "../pipes/id.validation.pipe";
 import { Types } from "mongoose";
@@ -52,10 +64,11 @@ export class MovieController {
     return this.MovieService.createNewMovie()
   }
 
-  @Put('/update-movie/:id')
+  @UsePipes(new ValidationPipe())
+  @Put('/:id')
   @HttpCode(200)
   @Auth('admin')
-  async updateMovie(@Param('id',idValidationPipe)id:string,@Body('dto')dto:MovieDto) {
+  async updateMovie(@Param('id',idValidationPipe)id:string,@Body()dto:MovieDto) {
     return this.MovieService.updateMovie(id,dto)
   }
   @Delete('/:id')

@@ -81,11 +81,10 @@ export class MovieService {
     // telegram notification
 
 
-    const updateMovie = await this.MovieModel.findByIdAndUpdate(_id,dto,{
-      new:true,
-    }).exec()
+    const updateMovie = await this.MovieModel.findById({_id})
 
-    if(!updateMovie) throw new NotFoundException('Фильм не найден')
+    if(!updateMovie)
+      throw new NotFoundException('Фильм не найден')
 
     return this.MovieModel.findByIdAndUpdate(_id, dto, { new: true }).exec()
   }
