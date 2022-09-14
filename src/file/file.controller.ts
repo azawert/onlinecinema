@@ -21,7 +21,7 @@ export class FileController {
   @Post()
   @HttpCode(200)
   @Auth('admin')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('file'))
   async uploadFiles(@UploadedFile() file: Express.Multer.File, @Query('folder')folder?:string) {
     return this.fileService.saveFiles([file],folder)
   }
