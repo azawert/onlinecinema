@@ -3,6 +3,7 @@ import {InjectModel} from "nestjs-typegoose";
 import {ActorModel} from "./actor.model";
 import {ModelType} from "@typegoose/typegoose/lib/types";
 import {ActorDto} from "./dto/actor.dto";
+import { from } from "rxjs";
 
 @Injectable()
 export class ActorService {
@@ -31,7 +32,8 @@ export class ActorService {
         const actor = await this.ActorModel.find(options)
         if(!actor)
             throw new NotFoundException('По вашему запросу актер не был найден')
-        return this.ActorModel.find(options).select('-__v -updatedAt').sort({createdAt:'desc'}).exec()
+        return this.ActorModel.aggregate().match(options).lookup({ from: 'Movie',
+        foreignField:'actors',localField:'_id',as:'movies'}).addFields({countMovies:{$size:'$movies'}}).project({__v:0,updatedAt:0,movies:0}).sort({createdAt:'desc'}).exec()
     }
     async getActorById(_id:string) {
         const actor = await this.ActorModel.findById({_id})
