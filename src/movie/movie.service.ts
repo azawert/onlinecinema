@@ -5,13 +5,16 @@ import { InjectModel } from "nestjs-typegoose";
 import { ModelType } from "@typegoose/typegoose/lib/types";
 import { MovieDto } from "./dto/createMovie.dto";
 import { Types } from "mongoose";
+import { SlugDto } from "./dto/slug.dto";
+import { GenreIdsDto } from "./dto/genreIds.dto";
+
 
 @Injectable()
 export class MovieService {
   constructor(@InjectModel(MovieModel) private  readonly  MovieModel: ModelType<MovieModel>) {
   }
 
-  async getMovieBySlug(slug:string) {
+  async getMovieBySlug(slug:SlugDto) {
     const movie = await this.MovieModel.findOne({slug}).populate('actors genres').exec()
     if(!movie) throw new NotFoundException('Фильм не  найден, попробуйте ввести другое название')
     return movie
@@ -19,17 +22,18 @@ export class MovieService {
   async getMovieByActor(actorId:Types.ObjectId) {
     const movie = await this.MovieModel.find({actors: actorId}).exec()
     if(!movie) throw new NotFoundException('Фильм не  найден, попробуйте ввести другого актера')
+
     return movie
   }
-  async getMovieByGenres(genreIds:Types.ObjectId[]) {
-    const movie = await this.MovieModel.find({genres:{$in: genreIds}}).exec()
+  async getMovieByGenres(genres:Types.ObjectId[]) {
+    const movie = await this.MovieModel.find({genres:{$in: genres}})
     if(!movie) throw new NotFoundException('Фильм не  найден')
     return movie
   }
-  async upadteViewsCount(slug:string) {
+  async upadteViewsCount(slug:SlugDto) {
     const updatedFilm = await this.MovieModel.findOneAndUpdate({slug},{
       $inc:{countOpened:1}
-    }).exec()
+    },{new:true}).exec()
     if(!updatedFilm) throw new BadGatewayException('Что-то пошло не так...')
     return updatedFilm
   }

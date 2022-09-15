@@ -16,6 +16,8 @@ import { idValidationPipe } from "../pipes/id.validation.pipe";
 import { Types } from "mongoose";
 import { Auth } from "../auth/decorators/auth.decorator";
 import { MovieDto } from "./dto/createMovie.dto";
+import { GenreIdsDto } from "./dto/genreIds.dto";
+import { SlugDto } from "./dto/slug.dto";
 
 @Controller('movie')
 export class MovieController {
@@ -23,13 +25,14 @@ export class MovieController {
   }
 
   @Get('/by-slug/:slug')
-  async getBySlug(@Param('slug')slug:string) {
+  async getBySlug(@Param('slug')slug:SlugDto) {
     return this.MovieService.getMovieBySlug(slug)
   }
   @Get('/by-actor/:actorId')
   async getByActor(@Param('actorId',idValidationPipe)actorId:Types.ObjectId) {
     return this.MovieService.getMovieByActor(actorId)
   }
+  @UsePipes(new ValidationPipe())
   @Post('/by-genres')
   @HttpCode(200)
   async getByGenres(@Body('genres')genresIds:Types.ObjectId[]) {
@@ -45,7 +48,7 @@ export class MovieController {
   }
   @Put('/update-views')
   @HttpCode(200)
-  async updateViews(@Body('slug')slug:string) {
+  async updateViews(@Body('slug')slug:SlugDto) {
     return this.MovieService.upadteViewsCount(slug)
   }
 
