@@ -1,9 +1,11 @@
-import { BadGatewayException, BadRequestException,  Injectable, NotFoundException } from "@nestjs/common";
+import {  BadRequestException,  Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "nestjs-typegoose";
 import { UserModel } from "./user.model";
 import { ModelType } from "@typegoose/typegoose/lib/types";
 import { updateUserDto } from "./dto/updateUser.dto";
 import { genSalt, hash } from "bcryptjs";
+import {Types} from "mongoose";
+
 
 
 @Injectable()
@@ -66,4 +68,15 @@ export class UserService {
     return findUser
   }
 
+  async toggleFav(MovieId:Types.ObjectId, user:UserModel) {
+    const {_id,favorites} = user || {}
+
+    return this.UserModel.findByIdAndUpdate({_id},{favorites:favorites.includes(MovieId)?favorites.filter(id=>String(id) !== String(MovieId)):favorites.push(MovieId)})
+
+  }
+  async getFavMovies(_id:Types.ObjectId) {
+    return this.UserModel.findById(_id,'favorites').populate({path:'favorites',populate:{
+      path:'genres'
+    }}).exec().then(data => data.favorites)
+  }
 }

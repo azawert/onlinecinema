@@ -5,6 +5,7 @@ import { User } from "./decorators/user.decorator";
 import { updateUserDto } from "./dto/updateUser.dto";
 import { idValidationPipe } from "../pipes/id.validation.pipe";
 import { UserModel } from "./user.model";
+import {Types} from "mongoose";
 
 
 @Controller('users')
@@ -25,6 +26,20 @@ export class UserController {
   async updateProfile(@User('_id')_id:string,@Body()dto:updateUserDto){
     return this.userService.updateUser(_id,dto)
   }
+
+
+  @Put('profile/favorites')
+  @HttpCode(200)
+  @Auth()
+   async handleFavourites(@Body('movieId',idValidationPipe)movieId:Types.ObjectId,@User() user:UserModel) {
+    return this.userService.toggleFav(movieId,user)
+  }
+  @Get('profile/favorites')
+  @Auth()
+  async getAllFavMovies(@User('id')id:Types.ObjectId) {
+    return this.userService.getFavMovies(id)
+  }
+
 
   @UsePipes(new ValidationPipe())
   @Put(':id')
