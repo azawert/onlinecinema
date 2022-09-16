@@ -68,9 +68,8 @@ export class UserService {
     return findUser
   }
 
-  async toggleFav(MovieId:Types.ObjectId, user:UserModel) {
-    const {_id,favorites} = user || {}
-
+  async toggleFav(MovieId:Types.ObjectId,user:UserModel) {
+    const {_id,favorites} = user
     return this.UserModel.findByIdAndUpdate({_id},{favorites:favorites.includes(MovieId)?favorites.filter(id=>String(id) !== String(MovieId)):favorites.push(MovieId)})
 
   }
