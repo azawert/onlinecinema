@@ -57,7 +57,13 @@ export class MovieService {
   async getMostPopular() {
     return this.MovieModel.find({countOpened: {$gt:0}}).sort({countOpened:-1}).populate('genres').exec()
   }
-
+  async updateRating(id:Types.ObjectId,newRating:number) {
+    return  this.MovieModel.findOneAndUpdate(id,{
+      rating: newRating
+    },{
+      new:true
+    }).exec()
+  }
   //admin
 
   async getMovieById(_id:string) {

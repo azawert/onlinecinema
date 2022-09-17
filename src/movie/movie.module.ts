@@ -13,7 +13,8 @@ import { MovieModel } from "./movie.model";
       schemaOptions:{
         collection:'Movie',
       },
-    },]),
-  ]
+    }]),
+  ],
+  exports:[MovieService]
 })
 export class MovieModule {}
