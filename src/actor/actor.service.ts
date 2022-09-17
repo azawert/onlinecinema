@@ -3,7 +3,7 @@ import {InjectModel} from "nestjs-typegoose";
 import {ActorModel} from "./actor.model";
 import {ModelType} from "@typegoose/typegoose/lib/types";
 import {ActorDto} from "./dto/actor.dto";
-import { from } from "rxjs";
+
 
 @Injectable()
 export class ActorService {
