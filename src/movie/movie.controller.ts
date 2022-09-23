@@ -70,7 +70,7 @@ export class MovieController {
   @UsePipes(new ValidationPipe())
   @Put('/:id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth()
   async updateMovie(@Param('id',idValidationPipe)id:string,@Body()dto:MovieDto) {
     return this.MovieService.updateMovie(id,dto)
   }

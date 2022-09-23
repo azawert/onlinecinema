@@ -27,7 +27,8 @@ export class MovieModel extends TimeStamps{
   @prop({unique:true})
   slug: string
 
-
+  @prop({unique:true})
+  title: string
 
   @prop({default: 4.0})
   rating?:number

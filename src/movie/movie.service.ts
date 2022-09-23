@@ -44,9 +44,6 @@ export class MovieService {
       options = {
         $or: [
           {
-            slug: new RegExp(searchTerm,'i')
-          },
-          {
             title: new RegExp(searchTerm,'i')
           }
         ]
