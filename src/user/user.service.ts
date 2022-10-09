@@ -46,21 +46,25 @@ export class UserService {
     }
     return {message:'Удаление произошло успешно!'}
   }
-  async getAllUsers(searchTerm?:string){
-    let options = {}
-    if(searchTerm)
-      options = {
-      $or: [
-        {
-          email: new RegExp(searchTerm,'i')
-        }
-      ]
-      }
-    return  this.UserModel.find({searchTerm}).select('-password -updatedAt -__v').sort({
-      createdAt: 'desc'
-    })
+  async getAllUsers(searchTerm?: string) {
+		let options = {}
 
-  }
+		if (searchTerm) {
+			options = {
+				$or: [
+					{
+						email: new RegExp(searchTerm, 'i'),
+					},
+				],
+			}
+		}
+
+		return this.UserModel
+			.find(options)
+			.select('-password -updatedAt -__v')
+			.sort({ createdAt: 'desc' })
+			.exec()
+	}
   async getUserProfile(_id:string){
     const findUser = await this.UserModel.findById({_id})
     if(!findUser)

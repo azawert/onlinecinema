@@ -55,6 +55,9 @@ export class AuthService {
   }
   async validateUser(dto:AuthDto):Promise<UserModel>{
     const existedUser = await this.UserModel.findOne({email:dto.email})
+    if(!existedUser) {
+      throw new BadRequestException('Неверный емейл')
+    }
     const isPasswordValid = await compare(dto.password,existedUser.password)
     if(!existedUser || !isPasswordValid)
       throw new BadRequestException('Неверные данные')
