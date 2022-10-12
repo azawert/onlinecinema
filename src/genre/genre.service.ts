@@ -36,7 +36,7 @@ export class GenreService {
                     }
                 ]
             }
-        return  this.GenreModel.find({searchTerm}).select( '-updatedAt -__v').sort({
+        return  this.GenreModel.find(options).select( '-updatedAt -__v').sort({
             createdAt: 'desc'
         })
 
