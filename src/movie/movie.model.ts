@@ -3,7 +3,7 @@ import { prop, Ref } from "@typegoose/typegoose";
 
 import { ActorModel } from "../actor/actor.model";
 import { GenreModel } from "../genre/genre.model";
-
+import { RatingModel } from 'src/rating/rating.model';
 export interface MovieModel extends Base{}
 
 export class Parametrs {

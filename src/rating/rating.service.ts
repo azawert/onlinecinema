@@ -25,19 +25,25 @@ export class RatingService {
     return ratingsMovie.reduce((acc,item)=>acc+item.value,0) / ratingsMovie.length
 
   }
-  async setRating(userId: Types.ObjectId, dto:RatingDto) {
-    const {value,movieId} = dto
+  async setRating(userId: Types.ObjectId, dto: RatingDto) {
+		const { movieId, value } = dto
 
+		const newRating = await this.RatingModel
+			.findOneAndUpdate(
+				{ movieId, userId },
+				{
+					userId,
+					movieId,
+					value,
+				},
+				{ upsert: true, new: true }
+			)
+			.exec()
 
-    const newRating = await this.RatingModel.findOneAndUpdate({movieId,userId},{
-      movieId,userId,value
-    },{
-      new:true,
-      upsert:true,
-      setDefaultsOnInsert:true
-    }).exec()
-    const averageRating = await this.averageRatingMovie(movieId)
-    await this.MovieService.updateRating(movieId,averageRating)
-    return newRating
-  }
+		const averageRating = await this.averageRatingMovie(movieId)
+
+		await this.MovieService.updateRating(movieId, averageRating)
+
+		return newRating
+	}
 }

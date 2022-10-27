@@ -12,7 +12,7 @@ import { FileService } from "./file.service";
 import { Auth } from "../auth/decorators/auth.decorator";
 import { FileInterceptor } from "@nestjs/platform-express";
 
-@Controller('file')
+@Controller('files')
 export class FileController {
   constructor(private readonly  fileService:FileService) {
 

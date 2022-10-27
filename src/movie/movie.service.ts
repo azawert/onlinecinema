@@ -3,7 +3,7 @@ import { BadGatewayException, BadRequestException, Injectable, NotFoundException
 import { MovieModel } from "./movie.model";
 import { InjectModel } from "nestjs-typegoose";
 import { ModelType } from "@typegoose/typegoose/lib/types";
-import { MovieDto } from "./dto/createMovie.dto";
+import { MovieDto, Parametrs } from "./dto/createMovie.dto";
 import { Types } from "mongoose";
 import { SlugDto } from "./dto/slug.dto";
 import { GenreIdsDto } from "./dto/genreIds.dto";
@@ -74,7 +74,7 @@ export class MovieService {
       bigPoster: '',
       actors: [],
       genres:[],
-
+     
       poster: '',
       title: '',
       videoUrl:'',
